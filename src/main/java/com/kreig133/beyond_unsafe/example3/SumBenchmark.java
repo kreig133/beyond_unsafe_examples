@@ -58,15 +58,22 @@ public class SumBenchmark {
 
     @Benchmark
     public int benchmarkUnsafeIntArray() {
-        int checkSum = 0;
+        int checkSum1 = 0;
+        int checkSum2 = 0;
+        int checkSum3 = 0;
+        int checkSum4 = 0;
+
 
         for (int i = 0; i < array.length; i += 4) {
             int aLong = UnsafeAccess.UNSAFE.getInt(array, ARRAY_BASE_OFFSET + i);
-            checkSum += (byte) aLong;
-            checkSum += (byte) (aLong >>= 8);
-            checkSum += (byte) (aLong >>= 8);
-            checkSum += (byte) (aLong >>= 8);
+            checkSum1 += (byte) aLong;
+            checkSum2 += (byte) (aLong >> 8);
+            checkSum3 += (byte) (aLong >> 16);
+            checkSum4 += (byte) (aLong >> 24);
+
         }
+
+        int checkSum  = checkSum1 + checkSum2 + checkSum3 + checkSum4;
         checkSum %= 256;
 
         return checkSum;
